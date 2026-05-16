@@ -37,7 +37,6 @@ export type TemplateKey =
     | "GSAP_NEXT"
     | "GSAP_NUXT"
     | "HONO_NODEJS"
-    | "HONO_NODEJS"
     | "TUTORIALKIT"
     | "BLANK";
 

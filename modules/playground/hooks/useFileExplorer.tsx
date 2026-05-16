@@ -337,10 +337,12 @@ export const useFileExplorer = create<FileExplorerState>((set, get) => ({
     const { templateData, openFiles, activeFileId } = get();
     if (!templateData) return;
 
-    // Generate old and new file IDs using the same logic as openFile
     const oldFileId = generateFileId(file, templateData);
     const newFile = { ...file, filename: newFilename, fileExtension: newExtension };
-    const newFileId = generateFileId(newFile, templateData);
+    const extensionSuffix = newExtension ? `.${newExtension}` : "";
+    const newFileId = parentPath
+      ? `${parentPath.replace(/^\/+/, "")}/${newFilename}${extensionSuffix}`
+      : `${newFilename}${extensionSuffix}`;
 
     try {
       const updatedTemplateData = JSON.parse(

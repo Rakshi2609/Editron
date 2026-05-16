@@ -33,6 +33,9 @@ import { useFileExplorer } from "@/modules/playground/hooks/useFileExplorer";
 import { toast } from "sonner";
 import type { TemplateFolder } from "@/modules/playground/lib/path-to-json";
 import { useChat } from "@ai-sdk/react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { generateFileId } from "@/modules/playground/lib";
 
 interface AIChatPanelProps {
     templateData: TemplateFolder | null;
@@ -77,7 +80,7 @@ export default function AIChatPanel({
         status,
         setMessages,
         addToolResult,
-        sendMessage: chatSendMessage,
+        append,
     } = useChat({
         onError: (err: Error) => {
             console.error("AI Chat Error:", err);
@@ -103,8 +106,8 @@ export default function AIChatPanel({
     const sendMessage = useCallback(() => {
         const trimmed = inputValue.trim();
         if (!trimmed || isLoading || hasUnresolvedTools) return;
-        chatSendMessage(
-            { text: trimmed },
+        append(
+            { role: "user", content: trimmed },
             {
                 body: {
                     provider,
@@ -117,7 +120,7 @@ export default function AIChatPanel({
         if (inputRef.current) {
             inputRef.current.style.height = "auto";
         }
-    }, [inputValue, isLoading, hasUnresolvedTools, chatSendMessage, provider, fileTree, getUserApiKey]);
+    }, [inputValue, isLoading, hasUnresolvedTools, append, provider, fileTree, getUserApiKey]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -207,9 +210,8 @@ export default function AIChatPanel({
                         setTemplateData(updatedTemplate);
 
                         const updatedOpenFiles = openFiles.map((f) => {
-                            const ext = f.fileExtension ? `.${f.fileExtension}` : "";
-                            const fullName = `${f.filename}${ext}`;
-                            if (path.endsWith(fullName)) {
+                            const fileId = generateFileId(f, templateData);
+                            if (fileId === path) {
                                 return { ...f, content: content as string, hasUnsavedChanges: true };
                             }
                             return f;
@@ -233,9 +235,8 @@ export default function AIChatPanel({
                         for (const change of changes) {
                             currentItems = addOrUpdateFile(currentItems, change.path, change.content);
                             currentOpenFiles = currentOpenFiles.map((f) => {
-                                const ext = f.fileExtension ? `.${f.fileExtension}` : "";
-                                const fullName = `${f.filename}${ext}`;
-                                if (change.path.endsWith(fullName)) {
+                                const fileId = generateFileId(f, templateData);
+                                if (change.path === fileId) {
                                     return { ...f, content: change.content, hasUnsavedChanges: true };
                                 }
                                 return f;
@@ -261,9 +262,8 @@ export default function AIChatPanel({
                         setTemplateData(updatedTemplate);
 
                         const updatedOpenFiles = openFiles.filter((f) => {
-                            const ext = f.fileExtension ? `.${f.fileExtension}` : "";
-                            const fullName = `${f.filename}${ext}`;
-                            return !path.endsWith(fullName);
+                            const fileId = generateFileId(f, templateData);
+                            return fileId !== path;
                         });
 
                         setOpenFiles(updatedOpenFiles);
@@ -376,8 +376,10 @@ export default function AIChatPanel({
                                     </div>
                                     <div className="flex-1 space-y-2 min-w-0">
                                         {textContent && (
-                                            <div className="bg-muted/50 border rounded-2xl rounded-tl-sm px-4 py-3 max-w-[95%] text-[13px] leading-relaxed whitespace-pre-wrap break-words text-foreground shadow-sm">
-                                                {textContent}
+                                            <div className="bg-muted/50 border rounded-2xl rounded-tl-sm px-4 py-3 max-w-[95%] text-[13px] leading-relaxed break-words text-foreground shadow-sm prose prose-sm dark:prose-invert">
+                                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                    {textContent}
+                                                </ReactMarkdown>
                                             </div>
                                         )}
                                         {toolParts.map((ti: any) => {

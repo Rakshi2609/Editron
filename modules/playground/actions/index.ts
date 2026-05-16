@@ -166,14 +166,14 @@ export const SaveUpdatedCode = async (playgroundId: string, data: TemplateFolder
   try {
     const updatedPlayground = await db.templateFile.upsert({
       where: {
-        playgroundId, // now allowed since playgroundId is unique
+        playgroundId,
       },
       update: {
-        content: JSON.stringify(data),
+        content: data as any,
       },
       create: {
         playgroundId,
-        content: JSON.stringify(data),
+        content: data as any,
       },
     });
 
