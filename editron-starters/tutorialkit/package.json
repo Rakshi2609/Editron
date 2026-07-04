@@ -6,9 +6,9 @@
   "scripts": {
     "astro": "astro",
     "build": "astro check && astro build",
-    "dev": "astro dev",
+    "dev": "node api.js && astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "node api.js && astro dev"
   },
   "dependencies": {
     "@tutorialkit/components-react": "0.0.1-alpha.22",

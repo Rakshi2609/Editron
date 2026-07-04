@@ -2,7 +2,7 @@
   "name": "react-ts-starter",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node api.js && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

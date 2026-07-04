@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "My Remotion video",
   "scripts": {
-    "dev": "remotion studio",
+    "dev": "node api.js && remotion studio",
     "build": "remotion render",
     "upgrade": "remotion upgrade",
     "test": "eslint src && tsc"
