@@ -2,7 +2,7 @@
   "name": "bootstrap-5-starter",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "node api.js && vite",
     "build": "vite build",
     "preview": "vite preview"
   },
