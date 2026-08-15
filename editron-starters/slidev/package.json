@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "slidev",
+    "dev": "node api.js && slidev",
     "build": "slidev build",
     "export": "slidev export"
   },
