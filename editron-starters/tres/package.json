@@ -16,7 +16,7 @@
     "threejs-vue"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "node api.js && vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
