@@ -1,8 +1,8 @@
 {
   "name": "gsap-sveltekit-starter",
   "scripts": {
-    "dev": "node api.js && vite dev",
-    "build": "vite build",
+    "dev": "node init && vite dev",
+    "build": "node init && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",

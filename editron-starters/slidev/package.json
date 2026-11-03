@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "node api.js && slidev",
-    "build": "slidev build",
+    "dev": "node init && slidev",
+    "build": "node init && slidev build",
     "export": "slidev export"
   },
   "dependencies": {
