@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node api.js && servor --reload"
+    "start": "node init && servor --reload"
   },
   "dependencies": {
     "servor": "^4.0.2"
