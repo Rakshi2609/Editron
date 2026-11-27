@@ -2,7 +2,7 @@
   "name": "static-project",
   "version": "1.0.0",
   "scripts": {
-    "start": "servor --reload"
+    "start": "node init && servor --reload"
   },
   "dependencies": {
     "servor": "^4.0.2"
